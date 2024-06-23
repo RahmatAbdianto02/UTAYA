@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.utaya.data.response.produk.RecommendationsItem
+import com.dicoding.utaya.R
 import com.dicoding.utaya.databinding.FragmentHomeBinding
 import com.dicoding.utaya.ui.Bottom.produk.ListProdukAdapter
+import com.dicoding.utaya.ui.Bottom.produk.Produk
 import com.dicoding.utaya.ui.ViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -19,7 +20,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var rvProduk: RecyclerView
-    private val list = ArrayList<RecommendationsItem>()
+    private val list = ArrayList<Produk>()
     private lateinit var listProdukAdapter: ListProdukAdapter
     private lateinit var homeViewModel: HomeViewModel
 
@@ -36,19 +37,30 @@ class HomeFragment : Fragment() {
 
         rvProduk = binding.rvProduk
         rvProduk.setHasFixedSize(true)
-        rvProduk.layoutManager = LinearLayoutManager(requireContext())
-
-        // Initialize adapter
-        listProdukAdapter = ListProdukAdapter(list)
-        rvProduk.adapter = listProdukAdapter
-
-        homeViewModel.listProduk.observe(viewLifecycleOwner) { produk ->
-            listProdukAdapter.setProdukList(produk)
-        }
-
-        homeViewModel.fetchProduk()
-
+        list.addAll(getListProduk())
+        showRecyclerList()
         return root
+    }
+
+    private fun getListProduk(): ArrayList<Produk> {
+        val dataMerk = resources.getStringArray(R.array.data_merk)
+//        val dataHarga = resources.getStringArray(R.array.data_harga)
+        val dataLink = resources.getStringArray(R.array.data_link)
+        val dataArtikel = resources.getStringArray(R.array.data_article)
+        val dataFoto = resources.obtainTypedArray(R.array.data_foto)
+        val listHero = ArrayList<Produk>()
+        for (i in dataMerk.indices) {
+            val hero = Produk(dataMerk[i], dataLink[i], dataArtikel[i], dataFoto.getResourceId(i, -1))
+            listHero.add(hero)
+        }
+        return listHero
+
+    }
+
+    private fun showRecyclerList() {
+        rvProduk.layoutManager = LinearLayoutManager(requireContext())
+        val listProdukAdapter = ListProdukAdapter(list)
+        rvProduk.adapter = listProdukAdapter
     }
 
     override fun onDestroyView() {

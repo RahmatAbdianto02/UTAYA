@@ -35,44 +35,39 @@
     <string-array name="data_merk">
         <item>Azarine</item>
         <item>Kahff</item>
-        <item>Wardah</item>
-        <item>Wardah</item>
-        <item>Wardah</item>
+        <item>Amaterasun</item>
+        <item>Carasun</item>
         <item>Wardah</item>
     </string-array>
-    <string-array name="data_harga">
-        <item>Rp.100.000</item>
-        <item>Rp.200.000</item>
-        <item>Rp.300.000</item>
-        <item>Rp.300.000</item>
-        <item>Rp.300.000</item>
-        <item>Rp.300.000</item>
+<!--    <string-array name="data_harga">-->
+<!--        <item>Rp.100.000</item>-->
+<!--        <item>Rp.200.000</item>-->
+<!--        <item>Rp.300.000</item>-->
+<!--        <item>Rp.300.000</item>-->
+<!--        <item>Rp.300.000</item>-->
+<!--        <item>Rp.300.000</item>-->
 
-    </string-array>
+<!--    </string-array>-->
     <string-array name="data_link">
-        <item>google.com</item>
-        <item>youtube.com</item>
-        <item>twitter.com</item>
-        <item>twitter.com</item>
-        <item>twitter.com</item>
-        <item>twitter.com</item>
-
+        <item>Shopee-1</item>
+        <item>Shopee-2</item>
+        <item>Shopee-3</item>
+        <item>Shopee-4</item>
+        <item>Shopee-5</item>
     </string-array>
     <string-array name="data_article">
         <item>Artikel 1</item>
         <item>Artikel 2</item>
         <item>Artikel 3</item>
-        <item>Artikel 3</item>
-        <item>Artikel 3</item>
-        <item>Artikel 3</item>
+        <item>Artikel 4</item>
+        <item>Artikel 5</item>
 
     </string-array>
     <integer-array name="data_foto">
         <item>@drawable/azarine</item>
         <item>@drawable/kahff</item>
-        <item>@drawable/wardah</item>
-        <item>@drawable/wardah</item>
-        <item>@drawable/wardah</item>
+        <item>@drawable/amaterasun</item>
+        <item>@drawable/carasun</item>
         <item>@drawable/wardah</item>
 
     </integer-array>
