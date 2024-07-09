@@ -31,45 +31,40 @@
 
         <TextView
             android:id="@+id/tv_title_one"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/iv_card"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/merk"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.123"
             app:layout_constraintStart_toEndOf="@id/iv_card"
-            app:layout_constraintTop_toTopOf="@id/iv_card" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_title_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/iv_card"
-            android:text="@string/link"
+            android:layout_marginTop="8dp"
+            android:text="Link"
+            android:textColor="@color/cek"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.123"
-            app:layout_constraintStart_toEndOf="@id/iv_card"
+            app:layout_constraintStart_toStartOf="@id/tv_title_one"
             app:layout_constraintTop_toBottomOf="@id/tv_title_one" />
 
         <TextView
             android:id="@+id/tv_title_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/tv_title_three"
-            android:text="@string/article"
-            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:text="Artikel"
+            android:textColor="@color/kuning"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.877"
-            app:layout_constraintStart_toEndOf="@id/tv_title_three"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.81" />
+            app:layout_constraintStart_toStartOf="@id/tv_title_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_three" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

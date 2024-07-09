@@ -1,8 +1,11 @@
-package com.dicoding.utaya.data.response.produk
+package com.dicoding.utaya.data.response.camera
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-data class RecommendationsItems(
+@Parcelize
+data class RecommendationsItem(
 
 	@field:SerializedName("id")
 	val id: String,
@@ -18,4 +21,4 @@ data class RecommendationsItems(
 
 	@field:SerializedName("urlProduct")
 	val urlProduct: String
-)
+) : Parcelable

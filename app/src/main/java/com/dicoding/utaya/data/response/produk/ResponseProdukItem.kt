@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class ResponseProdukItem(
 
 	@field:SerializedName("data")
-	val dataTypeSkin: DataTypeSkin,
+	val data: List<DataTypeSkin>,
 
 	@field:SerializedName("id")
 	val id: String

@@ -7,17 +7,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 class ApiConfig {
     companion object {
-        private fun getInterceptor(token: String?): OkHttpClient {
-            val loggingInterceptor =
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        private fun getInterceptor(context: Context, token: String?): OkHttpClient {
+            val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val builder = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .cookieJar(MyCookieJar())
+                .addInterceptor(CookieInterceptor(context))
 
-            // Jika token tidak kosong atau null, tambahkan interceptor untuk Authorization
             if (!token.isNullOrEmpty()) {
                 builder.addInterceptor(AuthInterceptor(token))
             }
@@ -26,16 +25,16 @@ class ApiConfig {
         }
 
         fun getApiService(context: Context): ApiService {
-
             val sharedPref = Preference.initPref(context)
             val token = sharedPref.getString("token", null)
 
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://backend-utaya-n4d5yc5fnq-et.a.run.app/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getInterceptor(token))
+                .client(getInterceptor(context, token))
                 .build()
             return retrofit.create(ApiService::class.java)
         }
     }
 }
+

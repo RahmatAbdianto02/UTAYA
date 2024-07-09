@@ -15,11 +15,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.utaya.BottomActivity
 import com.dicoding.utaya.data.Result
+import com.dicoding.utaya.data.api.CookieInterceptor
 import com.dicoding.utaya.data.response.login.ResponseLogin
 import com.dicoding.utaya.data.utils.Preference
 import com.dicoding.utaya.databinding.ActivityLoginBinding
 import com.dicoding.utaya.ui.ViewModelFactory
 import com.dicoding.utaya.ui.register.RegisterActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -115,11 +119,35 @@ class LoginActivity : AppCompatActivity() {
             Preference.saveToken(dataLogin.token, this)
             Preference.saveUsername(dataLogin.username, this)
             Toast.makeText(this, "Login berhasil!", Toast.LENGTH_LONG).show()
+
+            // Save cookies
+            CoroutineScope(Dispatchers.IO).launch {
+                val cookies = CookieInterceptor.getCookies(this@LoginActivity)
+                if (cookies != null) {
+                    Log.d("LoginActivity", "Cookies to be saved: $cookies")
+                    saveCookiesToPreferences(cookies.toList())
+                } else {
+                    Log.e("LoginActivity", "No cookies found")
+                }
+            }
+
             startActivity(Intent(this, BottomActivity::class.java))
             finish()
         } else {
             Log.e("LoginActivity", "Login failed: dataLogin is null")
             Toast.makeText(this, "Login failed: ${data.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+
+    private fun saveCookiesToPreferences() {
+        val cookies = CookieInterceptor.getCookies(this)
+        if (cookies != null) {
+            val sharedPreferences = getSharedPreferences("PREF_COOKIES", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putStringSet("COOKIE_KEY", cookies)
+            editor.apply()
         }
     }
 
@@ -130,4 +158,17 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun saveCookiesToPreferences(cookies: List<String>) {
+        val sharedPreferences = getSharedPreferences("PREF_COOKIES", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putStringSet("COOKIE_KEY", cookies.toSet())
+        editor.apply()
+    }
+
+    private fun getCookiesFromPreferences(): Set<String>? {
+        val sharedPreferences = getSharedPreferences("PREF_COOKIES", Context.MODE_PRIVATE)
+        return sharedPreferences.getStringSet("COOKIE_KEY", null)
+    }
+
 }

@@ -1,15 +1,20 @@
 package com.dicoding.utaya.data.api
 
+import com.dicoding.utaya.data.response.camera.ResponsePredict
 import com.dicoding.utaya.data.response.changePw.ResponseChangePw
+import com.dicoding.utaya.data.response.history.ResponseHistory
 import com.dicoding.utaya.data.response.login.ResponseLogin
-import com.dicoding.utaya.data.response.produk.ResponseProdukItem
+import com.dicoding.utaya.data.response.produk.TestResponseProdukItem
 import com.dicoding.utaya.data.response.register.ResponseRegister
+import okhttp3.MultipartBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 
 interface ApiService {
 
@@ -37,9 +42,21 @@ interface ApiService {
         @Field("confirmNewPassword") confirmNewPassword: String,
     ) : ResponseChangePw
 
-//    @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImNlayIsImlhdCI6MTcxODg2NTcyNCwiZXhwIjoxNzIwMDc1MzI0fQ.qV8msJjTr8Hzw7q70cJoNjdKvGwNUJxGOTIvgA8IxBs")
     @GET("skintype")
     suspend fun getProduk(
         @Header("Authorization") token: String
-    ) : ResponseProdukItem
+    ) : List<TestResponseProdukItem>
+
+
+    @GET("history")
+    suspend fun getHistory(
+        @Header("Authorization") token: String
+    ) : ResponseHistory
+
+
+    @Multipart
+    @POST("predict")
+    suspend fun postSkinPredict(
+        @Part file: MultipartBody.Part
+    ) : ResponsePredict
 }

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.utaya.data.di.Injection
+import com.dicoding.utaya.ui.Bottom.camera.CameraViewModel
+import com.dicoding.utaya.ui.Bottom.history.HistoryViewModel
 import com.dicoding.utaya.ui.Bottom.home.HomeViewModel
 import com.dicoding.utaya.ui.changePassword.ChangePwViewModel
 import com.dicoding.utaya.ui.login.LoginViewModel
@@ -25,6 +27,12 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(CameraViewModel::class.java) -> {
+                CameraViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel Class")
         }

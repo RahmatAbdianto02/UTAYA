@@ -13,28 +13,48 @@ import kotlinx.coroutines.launch
 class HomeViewModel(private val dataRepository: DataRepository) : ViewModel() {
     private val _listProduk = MutableLiveData<List<RecommendationsItem>>()
     val listProduk: LiveData<List<RecommendationsItem>> = _listProduk
+    val loading = MutableLiveData<Boolean>()
 
     fun fetchProduk() {
         viewModelScope.launch {
             try {
+                loading.value = true
                 dataRepository.getProduk().collect { result ->
                     when (result) {
                         is Result.Success -> {
-                            val responseProdukItem = result.data
-                            val recommendations = responseProdukItem.dataTypeSkin.recommendations
-                            _listProduk.value = recommendations ?: emptyList()
+                            val responseProdukItemList = result.data
+                            Log.d("Cek Data result bosss", responseProdukItemList.toString())
+
+                            // Buat list untuk menyimpan semua recommendations
+                            val allRecommendations = mutableListOf<RecommendationsItem>()
+
+                            // Iterasi melalui setiap item dan ambil recommendations
+                            responseProdukItemList.forEach { item ->
+                                item.data?.recommendations?.filterNotNull()?.let { recommendations ->
+                                    allRecommendations.addAll(recommendations)
+                                }
+                            }
+
+                            // Lakukan sesuatu dengan allRecommendations
+                            Log.d("Cek Recommendations", allRecommendations.toString())
+                            // Contoh: Menyimpan recommendations ke dalam LiveData untuk diobservasi di UI
+                            _listProduk.value = allRecommendations
+                            loading.value = false
                         }
                         is Result.Error -> {
-                            Log.e("HomeViewModel", "Error fetching produk: ${result}")
+                            Log.e("HomeViewModel", "Error fetching produk: ${result.error.toString()}")
+                            loading.value = false
                         }
                         is Result.Loading -> {
-                            // Handle loading state if needed
+                            loading.value = true
                         }
                     }
                 }
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Exception fetching produk: ${e.message}")
+                Log.e("HomeViewModel", "Exception fetching produk: ${e.message}", e)
+                loading.value = false
             }
         }
     }
+
 }

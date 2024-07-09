@@ -5,66 +5,49 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.utaya.R
-import com.dicoding.utaya.ui.Bottom.history.History
-import com.dicoding.utaya.ui.Bottom.history.ListHistoryAdapter
 import com.dicoding.utaya.databinding.FragmentHistoryBinding
+import com.dicoding.utaya.ui.ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HistoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
-
-    private lateinit var rvHistory: RecyclerView
-    private val list = ArrayList<History>()
-
     private val binding get() = _binding!!
+
+    private lateinit var listHistoryAdapter: ListHistoryAdapter
+    private lateinit var historyViewModel: HistoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        rvHistory = binding.rvHistory
-        rvHistory.setHasFixedSize(true)
-        list.addAll(getListHistory())
-        showRecyclerList()
-        return root
+        val factory = ViewModelFactory(requireContext())
+        historyViewModel = ViewModelProvider(this, factory).get(HistoryViewModel::class.java)
 
-    }
-
-    private fun getListHistory(): ArrayList<History> {
-        val dataSkin = resources.getStringArray(R.array.data_skin)
-        val dataFoto = resources.obtainTypedArray(R.array.data_foto_skin)
-        val listHistory = ArrayList<History>()
-        for (i in dataSkin.indices) {
-            val hero = History(dataSkin[i], dataFoto.getResourceId(i, -1))
-            listHistory.add(hero)
+        listHistoryAdapter = ListHistoryAdapter(emptyList())
+        binding.rvHistory.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = listHistoryAdapter
         }
-        return listHistory
 
+        historyViewModel.listHistory.observe(viewLifecycleOwner) { history ->
+            listHistoryAdapter.setHistoryList(history)
+            binding.pbHistory.visibility = View.GONE
+        }
+
+        historyViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            binding.pbHistory.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        historyViewModel.fetchHistory()
+
+        return root
     }
-
-    private fun showRecyclerList() {
-        rvHistory.layoutManager = LinearLayoutManager(requireContext())
-        val listHistoryAdapter = ListHistoryAdapter(list)
-        rvHistory.adapter = listHistoryAdapter
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
