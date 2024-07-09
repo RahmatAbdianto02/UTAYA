@@ -1,9 +1,11 @@
 package com.dicoding.utaya.ui.Bottom.camera
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,7 @@ import com.dicoding.utaya.data.response.camera.ResponsePredict
 import com.dicoding.utaya.data.utils.Preference
 import com.dicoding.utaya.databinding.FragmentCameraBinding
 import com.dicoding.utaya.ui.Bottom.camera.UploadUtils.reduceFileImage
+import com.dicoding.utaya.ui.Bottom.camera.result.ResultActivity
 import com.dicoding.utaya.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 
@@ -146,7 +149,12 @@ class CameraFragment : Fragment() {
     }
 
     private fun handleUploadSuccess(response: ResponsePredict) {
-        showToast("Upload success: ${response.skinType}")
+        showToast("Upload : ${response.message}")
+        // Arahkan ke ResultActivity setelah sukses upload
+        val intent = Intent(requireContext(), ResultActivity::class.java).apply {
+            putExtra("RESPONSE_PREDICT", response as Parcelable)
+        }
+        startActivity(intent)
     }
 
     private fun showToast(message: String) {

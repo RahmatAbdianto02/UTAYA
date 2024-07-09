@@ -28,6 +28,9 @@
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.Bottom.camera.result.ResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.changePassword.ChangePwActivity"
             android:exported="false" />
         <activity

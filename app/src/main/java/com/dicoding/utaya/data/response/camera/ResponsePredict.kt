@@ -10,6 +10,9 @@ data class ResponsePredict(
 	@field:SerializedName("skinType")
 	val skinType: String,
 
+	@field:SerializedName("message")
+	val message: String,
+
 	@field:SerializedName("skinTypePercentage")
 	val skinTypePercentage: String,
 

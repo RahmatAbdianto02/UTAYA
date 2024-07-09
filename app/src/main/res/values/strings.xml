@@ -32,6 +32,9 @@
     <string name="riwayat">Riwayat</string>
     <string name="jenis_kulit">jenis kulit</string>
     <string name="persen">Percentage</string>
+    <string name="result">Result</string>
+    <string name="tipe_skin">Tipe Skin</string>
+    <string name="percentage">Percentage</string>
 
     <string-array name="data_merk">
         <item>Azarine</item>
